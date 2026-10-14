@@ -1,0 +1,173 @@
+@import "tailwindcss";
+
+/*
+  Pinaakini luxury palette: warm ivory paper, obsidian ink, champagne gold.
+  Legacy token names (ivory, sand, forest, bronze, champagne, ink-soft) are kept
+  so every inner page follows the same palette.
+*/
+@theme {
+  --color-ivory: #f7f4ee;
+  --color-paper: #fbf9f5;
+  --color-sand: #efe9df;
+  --color-stone: #e2dbcf;
+  --color-ink: #141414;
+  --color-ink-soft: #5b5750;
+  --color-muted: #5b5750;
+  --color-gold: #b08d57;
+  --color-gold-deep: #8a6a3a;
+  --color-obsidian: #0f0f0e;
+  --color-night: #0f0f0e;
+
+  --color-bronze: #8a6a3a;
+  --color-champagne: #b08d57;
+  --color-marigold: #b08d57;
+  --color-forest: #141414;
+  --color-surface: #efe9df;
+
+  --font-display: var(--font-cormorant), "Times New Roman", serif;
+  --font-sans: var(--font-jost), system-ui, sans-serif;
+
+  --ease-lux: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root {
+  --margin: clamp(20px, 4vw, 64px);
+}
+
+html {
+  background: var(--color-ivory);
+  color: var(--color-ink);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-ivory);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--color-gold);
+  color: #fff;
+}
+
+section[id] {
+  scroll-margin-top: 80px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+@layer components {
+/* type roles */
+.t-display {
+  font-family: var(--font-display);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+}
+.t-head {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.5rem, 1.6rem + 3.6vw, 5rem);
+  letter-spacing: -0.015em;
+  line-height: 1;
+}
+.t-kicker {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+/* buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  height: 3.25rem;
+  padding: 0 1.75rem;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition:
+    background-color 0.4s var(--ease-lux),
+    color 0.4s var(--ease-lux),
+    border-color 0.4s var(--ease-lux),
+    transform 0.4s var(--ease-lux);
+  cursor: pointer;
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn-gold {
+  background: var(--color-gold);
+  color: #fff;
+}
+.btn-gold:hover {
+  background: var(--color-ink);
+}
+.btn-dark {
+  background: var(--color-ink);
+  color: #fff;
+}
+.btn-dark:hover {
+  background: var(--color-gold);
+}
+.btn-line {
+  border: 1px solid currentColor;
+}
+.btn-line:hover {
+  background: #fff;
+  color: var(--color-ink);
+  border-color: #fff;
+}
+.btn-line-dark {
+  border: 1px solid var(--color-ink);
+  color: var(--color-ink);
+}
+.btn-line-dark:hover {
+  background: var(--color-ink);
+  color: #fff;
+}
+
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
