@@ -1,0 +1,299 @@
+<title>Pinaakini Colour Plates</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500&family=Cormorant+Garamond:wght@400;500&family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Jost:wght@400;500&family=Manrope:wght@400;500;600&family=Marcellus&family=Mukta:wght@400;600&family=Plus+Jakarta+Sans:wght@400;600&display=swap">
+<style>
+/* Layout: a single reading column of plates; each plate pairs its swatches with a live mini website in that palette. */
+:root {
+  --bg: #fbfaf8;
+  --card: #ffffff;
+  --fg: #1b1c1e;
+  --muted: #5f636a;
+  --line: #e4e1db;
+  --chip: #f1efea;
+  --tag: #1b1c1e;
+  --tag-fg: #ffffff;
+  --display: "Fraunces", Georgia, serif;
+  --body: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #131416; --card: #1b1d20; --fg: #ecebe8; --muted: #a4a7ac; --line: #2c2e33; --chip: #24272b; --tag: #ecebe8; --tag-fg: #131416;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #131416; --card: #1b1d20; --fg: #ecebe8; --muted: #a4a7ac; --line: #2c2e33; --chip: #24272b; --tag: #ecebe8; --tag-fg: #131416;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font: 400 16px/1.6 var(--body);
+  padding-inline: clamp(16px, 4vw, 48px);
+  padding-block: clamp(32px, 6vw, 72px);
+}
+.wrap { max-width: 1120px; margin: 0 auto; display: grid; gap: clamp(48px, 7vw, 88px); }
+h1, h2, h3 { font-family: var(--display); font-weight: 600; text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2.2rem, 1.4rem + 3.4vw, 3.8rem); line-height: 1.02; }
+h2 { font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.3rem); line-height: 1.1; }
+h3 { font-size: 1.15rem; line-height: 1.3; }
+p { margin: 0; max-width: 66ch; }
+.lead { font-size: 1.12rem; color: var(--muted); margin-top: 18px; }
+.label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+
+/* intro */
+.intro { display: grid; gap: 28px; }
+.why { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.why div { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; display: grid; gap: 6px; }
+.why b { font-weight: 600; }
+.why span { color: var(--muted); font-size: 0.95rem; }
+
+/* plate */
+.plate { display: grid; gap: 22px; }
+.plate-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 10px 24px; }
+.plate-head .src { font-size: 0.8rem; font-weight: 600; padding: 5px 10px; border-radius: 99px; background: var(--chip); color: var(--fg); }
+.plate-head .src.rec { background: var(--tag); color: var(--tag-fg); }
+.story { color: var(--muted); }
+.plate-body { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 22px; align-items: start; }
+@media (max-width: 860px) { .plate-body { grid-template-columns: 1fr; } }
+
+.swatches { display: grid; gap: 8px; }
+.sw { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: 14px; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px 8px 8px; }
+.sw i { display: block; width: 56px; height: 44px; border-radius: 6px; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08); }
+.sw div { min-width: 0; }
+.sw b { display: block; font-weight: 600; font-size: 0.95rem; }
+.sw small { color: var(--muted); font-size: 0.82rem; }
+.sw button {
+  font: 500 0.82rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+  background: var(--chip); color: var(--fg); border: 0; border-radius: 6px; padding: 8px 10px; cursor: pointer;
+}
+.sw button:hover { outline: 1px solid var(--muted); }
+.sw button:focus-visible, .pick:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+.checks { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.checks span { font-size: 0.78rem; background: var(--chip); border-radius: 99px; padding: 4px 10px; font-variant-numeric: tabular-nums; }
+
+/* mini website mock: colours come from the plate's own --p-* variables */
+.mock { border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: var(--p-ground); color: var(--p-ink); font-family: var(--p-body); }
+.mock .nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px; background: var(--p-deep); color: var(--p-on-deep); }
+.mock .logo { font-family: var(--p-display); letter-spacing: 0.2em; font-size: 1.05rem; }
+.mock .logo small { display: block; letter-spacing: 0.5em; font-size: 0.55rem; color: var(--p-accent); font-family: var(--p-body); }
+.mock .links { display: flex; gap: 14px; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85; }
+@media (max-width: 520px) { .mock .links { display: none; } }
+.mock .hero { background: var(--p-deep); color: var(--p-on-deep); padding: 28px 20px 30px; display: grid; gap: 14px; }
+.mock .kick { font-size: 0.68rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--p-accent); }
+.mock .hl { font-family: var(--p-display); font-size: clamp(1.7rem, 1.2rem + 1.6vw, 2.5rem); line-height: 1.05; font-weight: 400; }
+.mock .btns { display: flex; flex-wrap: wrap; gap: 8px; }
+.mock .b1 { background: var(--p-accent); color: var(--p-on-accent); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; padding: 11px 16px; }
+.mock .b2 { border: 1px solid currentColor; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; padding: 10px 15px; }
+.mock .body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; padding: 20px; }
+@media (max-width: 520px) { .mock .body { grid-template-columns: 1fr; } }
+.mock .card { background: var(--p-surface); padding: 14px; display: grid; gap: 6px; }
+.mock .img { height: 64px; background: var(--p-extra); }
+.mock .tag { font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--p-link); }
+.mock .ct { font-family: var(--p-display); font-size: 1.25rem; line-height: 1.1; }
+.mock .cm { font-size: 0.8rem; color: var(--p-muted); }
+.mock .lnk { font-size: 0.78rem; font-weight: 600; color: var(--p-link); }
+.mock .stat { display: grid; align-content: start; gap: 4px; padding: 14px 4px; }
+.mock .num { font-family: var(--p-display); font-size: 2rem; line-height: 1; }
+.mock .note { font-size: 0.78rem; color: var(--p-muted); }
+.fonts { font-size: 0.85rem; color: var(--muted); }
+
+/* plate palettes */
+#forest { --p-ground:#F7F5EF; --p-surface:#ECE9E0; --p-ink:#171B19; --p-muted:#5A615C; --p-deep:#102B24; --p-on-deep:#F7F5EF; --p-accent:#C6AE82; --p-on-accent:#102B24; --p-link:#7A6136; --p-extra:#A7B6A4; --p-display:"Cormorant Garamond", Georgia, serif; --p-body:"Jost", system-ui, sans-serif; }
+#navy   { --p-ground:#F8F9FA; --p-surface:#EEF0F3; --p-ink:#1E293B; --p-muted:#64748B; --p-deep:#0B132B; --p-on-deep:#F8F9FA; --p-accent:#C5A059; --p-on-accent:#0B132B; --p-link:#8A6A2B; --p-extra:#1C2541; --p-display:"Cinzel", Georgia, serif; --p-body:"Plus Jakarta Sans", system-ui, sans-serif; }
+#river  { --p-ground:#F4F1EC; --p-surface:#E8E2D8; --p-ink:#1D2326; --p-muted:#5C6468; --p-deep:#22404A; --p-on-deep:#F4F1EC; --p-accent:#E3C9A0; --p-on-accent:#22404A; --p-link:#9C3B22; --p-extra:#9C3B22; --p-display:"Fraunces", Georgia, serif; --p-body:"Manrope", system-ui, sans-serif; }
+#granite{ --p-ground:#FAF8F4; --p-surface:#EDE9E1; --p-ink:#1A1A1A; --p-muted:#5E5A54; --p-deep:#2B2A28; --p-on-deep:#FAF8F4; --p-accent:#A3262A; --p-on-accent:#FFFFFF; --p-link:#A3262A; --p-extra:#D8C7A1; --p-display:"Marcellus", Georgia, serif; --p-body:"Mukta", system-ui, sans-serif; }
+
+/* next steps */
+.steps { display: grid; gap: 14px; counter-reset: s; padding: 0; margin: 0; list-style: none; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 14px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; }
+.steps li::before { content: counter(s); font-family: var(--display); font-size: 1.6rem; line-height: 1; }
+.steps b { display: block; margin-bottom: 4px; }
+.steps span { color: var(--muted); }
+.ask { display: grid; gap: 8px; padding-left: 20px; margin: 0; }
+.ask li { color: var(--fg); }
+.toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--tag); color: var(--tag-fg); padding: 10px 16px; border-radius: 8px; font-size: 0.9rem; }
+@media (prefers-reduced-motion: no-preference) { .mock { transition: transform .3s ease; } .mock:hover { transform: translateY(-2px); } }
+</style>
+
+<main class="wrap">
+  <header class="intro">
+    <p class="label">Pinaakini Infra · website colour direction</p>
+    <h1>Four colour plates for the Pinaakini website</h1>
+    <p class="lead">The current site uses black, ivory and gold. Almost every premium developer in India uses that combination, so the site reads as "another luxury template". Below are two palettes already written into the project briefs and two new ones built from Pinaakini's own story. Each plate shows its colours and a small sample of the website in that palette.</p>
+    <div class="why">
+      <div><b>Why it feels common</b><span>Black and gold with a thin serif is the default look for luxury real estate. It signals "premium" but not "Pinaakini".</span></div>
+      <div><b>What makes a brand look its own</b><span>A colour that comes from the company's story, its own logo, and real photographs of its land and homes.</span></div>
+      <div><b>What changes on the site</b><span>Colours live in one token file, so switching the whole site to any plate takes under an hour.</span></div>
+    </div>
+  </header>
+
+  <!-- A -->
+  <section class="plate" id="forest" aria-labelledby="t-forest">
+    <div class="plate-head">
+      <h2 id="t-forest">A · Forest &amp; Sage</h2>
+      <span class="src rec">From the frontend brief · recommended</span>
+    </div>
+    <p class="story">Pinaakini sells land: plots, layouts and farmland around Nellore, a district known for its paddy fields. Deep forest green says land and growth, and very few developers use it, so it stands apart immediately. Champagne stays as a small accent, so it still reads premium.</p>
+    <div class="plate-body">
+      <div class="swatches">
+        <div class="sw"><i style="background:#102B24"></i><div><b>Deep forest</b><small>Hero, header, footer</small></div><button type="button" data-hex="#102B24">#102B24</button></div>
+        <div class="sw"><i style="background:#F7F5EF"></i><div><b>Warm ivory</b><small>Page background</small></div><button type="button" data-hex="#F7F5EF">#F7F5EF</button></div>
+        <div class="sw"><i style="background:#171B19"></i><div><b>Rich charcoal</b><small>Headings and text</small></div><button type="button" data-hex="#171B19">#171B19</button></div>
+        <div class="sw"><i style="background:#C6AE82"></i><div><b>Muted champagne</b><small>Buttons on dark, small accents</small></div><button type="button" data-hex="#C6AE82">#C6AE82</button></div>
+        <div class="sw"><i style="background:#A7B6A4"></i><div><b>Soft sage</b><small>Secondary panels, tags</small></div><button type="button" data-hex="#A7B6A4">#A7B6A4</button></div>
+        <div class="checks"><span>Text on ivory 16:1</span><span>Ivory on forest 13.8:1</span><span>Champagne on forest 7:1</span></div>
+        <p class="fonts">Suggested type: Cormorant Garamond with Jost</p>
+      </div>
+      <div class="mock" aria-label="Sample of the website in Forest and Sage">
+        <div class="nav"><span class="logo">PINAAKINI<small>INFRA</small></span><span class="links"><span>Properties</span><span>Portfolio</span><span>Contact</span></span></div>
+        <div class="hero"><span class="kick">Villas · Layouts · Farmland</span><span class="hl">Land and homes, rooted in Nellore.</span><span class="btns"><span class="b1">Explore properties</span><span class="b2">Book a site visit</span></span></div>
+        <div class="body">
+          <div class="card"><div class="img"></div><span class="tag">Layouts · Podalakur Road</span><span class="ct">Emerald Bay</span><span class="cm">28 acres · plots available</span><span class="lnk">View property →</span></div>
+          <div class="stat"><span class="num">4</span><span class="note">kinds of property: villas, triplex homes, layouts and farmland</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- C -->
+  <section class="plate" id="river" aria-labelledby="t-river">
+    <div class="plate-head">
+      <h2 id="t-river">B · Pinakini River</h2>
+      <span class="src">New · built from the name</span>
+    </div>
+    <p class="story">Pinakini is the old name of the Penna, the river Nellore stands on. This plate takes its colours from it: river slate for the deep tone, riverbank sand for highlights, and the red laterite soil of the region as one strong accent for links and buttons. It is the most "only Pinaakini" option.</p>
+    <div class="plate-body">
+      <div class="swatches">
+        <div class="sw"><i style="background:#22404A"></i><div><b>River slate</b><small>Hero, header, footer</small></div><button type="button" data-hex="#22404A">#22404A</button></div>
+        <div class="sw"><i style="background:#F4F1EC"></i><div><b>Lime-wash white</b><small>Page background</small></div><button type="button" data-hex="#F4F1EC">#F4F1EC</button></div>
+        <div class="sw"><i style="background:#1D2326"></i><div><b>Wet stone</b><small>Headings and text</small></div><button type="button" data-hex="#1D2326">#1D2326</button></div>
+        <div class="sw"><i style="background:#E3C9A0"></i><div><b>Riverbank sand</b><small>Buttons on dark</small></div><button type="button" data-hex="#E3C9A0">#E3C9A0</button></div>
+        <div class="sw"><i style="background:#9C3B22"></i><div><b>Laterite red</b><small>Links, tags, one accent</small></div><button type="button" data-hex="#9C3B22">#9C3B22</button></div>
+        <div class="checks"><span>Text on white 14:1</span><span>White on slate 9.8:1</span><span>Laterite on white 6:1</span></div>
+        <p class="fonts">Suggested type: Fraunces with Manrope</p>
+      </div>
+      <div class="mock" aria-label="Sample of the website in Pinakini River">
+        <div class="nav"><span class="logo">PINAAKINI<small>INFRA</small></span><span class="links"><span>Properties</span><span>Portfolio</span><span>Contact</span></span></div>
+        <div class="hero"><span class="kick">Named after the river</span><span class="hl">Homes along the Pinakini.</span><span class="btns"><span class="b1">Explore properties</span><span class="b2">Book a site visit</span></span></div>
+        <div class="body">
+          <div class="card"><div class="img"></div><span class="tag">Villas · Venkatachalam</span><span class="ct">Palm Meadows</span><span class="cm">16 acres · 94 villas</span><span class="lnk">View property →</span></div>
+          <div class="stat"><span class="num">4</span><span class="note">kinds of property: villas, triplex homes, layouts and farmland</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- D -->
+  <section class="plate" id="granite" aria-labelledby="t-granite">
+    <div class="plate-head">
+      <h2 id="t-granite">C · Temple Granite</h2>
+      <span class="src">New · bold Indian identity</span>
+    </div>
+    <p class="story">Granite, sandstone and kumkum red from South Indian temple architecture, including Nellore's Ranganathaswamy temple. A confident, unmistakably Indian look. The red is used sparingly on the buttons, so the page stays calm and premium.</p>
+    <div class="plate-body">
+      <div class="swatches">
+        <div class="sw"><i style="background:#2B2A28"></i><div><b>Granite</b><small>Hero, header, footer</small></div><button type="button" data-hex="#2B2A28">#2B2A28</button></div>
+        <div class="sw"><i style="background:#FAF8F4"></i><div><b>Marble white</b><small>Page background</small></div><button type="button" data-hex="#FAF8F4">#FAF8F4</button></div>
+        <div class="sw"><i style="background:#1A1A1A"></i><div><b>Basalt</b><small>Headings and text</small></div><button type="button" data-hex="#1A1A1A">#1A1A1A</button></div>
+        <div class="sw"><i style="background:#A3262A"></i><div><b>Kumkum red</b><small>Buttons and links</small></div><button type="button" data-hex="#A3262A">#A3262A</button></div>
+        <div class="sw"><i style="background:#D8C7A1"></i><div><b>Sandstone</b><small>Panels, image frames</small></div><button type="button" data-hex="#D8C7A1">#D8C7A1</button></div>
+        <div class="checks"><span>Text on marble 16:1</span><span>White on kumkum 7.3:1</span><span>Sandstone on granite 8.6:1</span></div>
+        <p class="fonts">Suggested type: Marcellus with Mukta</p>
+      </div>
+      <div class="mock" aria-label="Sample of the website in Temple Granite">
+        <div class="nav"><span class="logo">PINAAKINI<small>INFRA</small></span><span class="links"><span>Properties</span><span>Portfolio</span><span>Contact</span></span></div>
+        <div class="hero"><span class="kick">Nellore, Andhra Pradesh</span><span class="hl">Built to stand for generations.</span><span class="btns"><span class="b1">Explore properties</span><span class="b2">Book a site visit</span></span></div>
+        <div class="body">
+          <div class="card"><div class="img"></div><span class="tag">Triplex · Magunta Layout</span><span class="ct">Symphony</span><span class="cm">28 triplex homes</span><span class="lnk">View property →</span></div>
+          <div class="stat"><span class="num">4</span><span class="note">kinds of property: villas, triplex homes, layouts and farmland</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- B -->
+  <section class="plate" id="navy" aria-labelledby="t-navy">
+    <div class="plate-head">
+      <h2 id="t-navy">D · Midnight &amp; Champagne</h2>
+      <span class="src">From the PRD, section 7.1</span>
+    </div>
+    <p class="story">The palette written in the PRD: royal navy with champagne gold on porcelain white. Safe and trustworthy, but it is the closest to what the client already called common. Shown so the client can compare it side by side.</p>
+    <div class="plate-body">
+      <div class="swatches">
+        <div class="sw"><i style="background:#0B132B"></i><div><b>Midnight navy</b><small>Hero, header, footer</small></div><button type="button" data-hex="#0B132B">#0B132B</button></div>
+        <div class="sw"><i style="background:#F8F9FA"></i><div><b>Porcelain</b><small>Page background</small></div><button type="button" data-hex="#F8F9FA">#F8F9FA</button></div>
+        <div class="sw"><i style="background:#1E293B"></i><div><b>Charcoal slate</b><small>Headings and text</small></div><button type="button" data-hex="#1E293B">#1E293B</button></div>
+        <div class="sw"><i style="background:#C5A059"></i><div><b>Champagne gold</b><small>Buttons on dark, accents</small></div><button type="button" data-hex="#C5A059">#C5A059</button></div>
+        <div class="sw"><i style="background:#64748B"></i><div><b>Muted grey</b><small>Secondary text</small></div><button type="button" data-hex="#64748B">#64748B</button></div>
+        <div class="checks"><span>Text on porcelain 13.9:1</span><span>Grey on porcelain 4.5:1</span><span>Gold on navy 7.5:1</span></div>
+        <p class="fonts">PRD type: Cinzel with Plus Jakarta Sans</p>
+      </div>
+      <div class="mock" aria-label="Sample of the website in Midnight and Champagne">
+        <div class="nav"><span class="logo">PINAAKINI<small>INFRA</small></span><span class="links"><span>Properties</span><span>Portfolio</span><span>Contact</span></span></div>
+        <div class="hero"><span class="kick">Nellore · Premium living</span><span class="hl">Building spaces. Creating futures.</span><span class="btns"><span class="b1">Explore properties</span><span class="b2">Book a site visit</span></span></div>
+        <div class="body">
+          <div class="card"><div class="img"></div><span class="tag">Farmland · Rapur Road</span><span class="ct">Eco Farms</span><span class="cm">45 acres · 80 estates</span><span class="lnk">View property →</span></div>
+          <div class="stat"><span class="num">4</span><span class="note">kinds of property: villas, triplex homes, layouts and farmland</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="plate" aria-labelledby="t-next">
+    <h2 id="t-next">What to do next</h2>
+    <ol class="steps">
+      <li><div><b>Ask the client to pick one plate, or shortlist two</b><span>A (Forest &amp; Sage) is already in the brief and fits a land developer. B (Pinakini River) is the most distinctive.</span></div></li>
+      <li><div><b>Apply it across the whole site</b><span>Colours and fonts change in one place, then every page follows. The client then reviews the live site, not a picture.</span></div></li>
+      <li><div><b>Replace the borrowed imagery</b><span>The same villa render and stock paddy photos make any palette feel generic. Real photos and drone video of Pinaakini's own layouts and homes will do more than any colour.</span></div></li>
+      <li><div><b>Add the official logo</b><span>The site still shows the name in plain type. A real logo, used in the header, footer and favicon, makes it a brand.</span></div></li>
+      <li><div><b>Give the site one signature idea</b><span>For example, a river line that runs through the pages for the Pinakini name, or an interactive layout plan where visitors tap a plot to see its size and status.</span></div></li>
+    </ol>
+  </section>
+
+  <section class="plate" aria-labelledby="t-ask">
+    <h2 id="t-ask">Questions for the client</h2>
+    <ul class="ask">
+      <li>Do you already use colours on brochures, hoardings or the office board? If yes, those should guide the choice.</li>
+      <li>Can you share the logo files (SVG or high-resolution PNG)?</li>
+      <li>Do you have real photos or drone videos of your projects?</li>
+      <li>Which numbers can we publish (acres developed, families, projects delivered)?</li>
+      <li>Can you share two or three genuine client testimonials, with permission?</li>
+    </ul>
+  </section>
+</main>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function () {
+  var toast = document.getElementById('toast');
+  var timer;
+  function show(msg) {
+    toast.textContent = msg;
+    toast.hidden = false;
+    clearTimeout(timer);
+    timer = setTimeout(function () { toast.hidden = true; }, 1600);
+  }
+  document.querySelectorAll('[data-hex]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var hex = btn.getAttribute('data-hex');
+      var done = function () { show('Copied ' + hex); };
+      try {
+        navigator.clipboard.writeText(hex).then(done, function () { select(btn); });
+      } catch (e) { select(btn); }
+    });
+  });
+  function select(el) {
+    var r = document.createRange();
+    r.selectNodeContents(el);
+    var s = window.getSelection();
+    s.removeAllRanges();
+    s.addRange(r);
+    show('Selected, press Ctrl+C to copy');
+  }
+})();
+</script>
