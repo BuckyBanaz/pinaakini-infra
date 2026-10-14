@@ -3,9 +3,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import PropertyCard, { isAvailable, type Offer } from "@/components/PropertyCard";
-import { Kicker, Rise, SplitHeading } from "@/components/home/motion";
+import CtaCard from "@/components/lux/CtaCard";
+import { Rise } from "@/components/home/motion";
 import { PROJECTS } from "@/lib/projects";
-import { site } from "@/lib/site";
+import { lux } from "@/lib/home";
 import { openVisit } from "@/lib/visit";
 import type { ProjectCategory } from "@/types/project";
 
@@ -33,76 +34,84 @@ export default function PropertiesBrowser() {
   const list = useMemo(
     () =>
       PROJECTS.filter(
-        (p) =>
-          isAvailable(p, offer) &&
-          (cat === "All" || p.category === cat) &&
-          (offer === "Rent" || status === "Any status" || p.status === status),
+        (p) => isAvailable(p, offer) && (cat === "All" || p.category === cat) && (offer === "Rent" || status === "Any status" || p.status === status),
       ),
     [offer, cat, status],
   );
 
   return (
-    <>
-      {/* filter bar */}
-      <div className="sticky top-0 z-30 border-b border-ink/10 bg-ivory/95 px-[var(--margin)] py-4 backdrop-blur-md">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex flex-wrap items-center gap-6">
-            <LayoutGroup id="offer-page">
-              <div role="tablist" aria-label="Buy or rent" className="inline-flex border border-ink/15 p-1">
-                {OFFERS.map((o) => (
-                  <button
-                    key={o}
-                    role="tab"
-                    aria-selected={offer === o}
-                    onClick={() => setOffer(o)}
-                    className={`relative h-10 min-w-24 cursor-pointer px-5 text-[12px] font-medium uppercase tracking-[0.2em] transition-colors duration-300 ${
-                      offer === o ? "text-white" : "text-ink hover:text-gold-deep"
-                    }`}
-                  >
-                    {offer === o && <motion.span layoutId="offer-pill-page" className="absolute inset-0 bg-ink" transition={{ type: "spring", stiffness: 380, damping: 34 }} />}
-                    <span className="relative">{o}</span>
-                  </button>
-                ))}
-              </div>
-            </LayoutGroup>
-            <div className="flex flex-wrap gap-x-5">
+    <div id="list" className="bg-white">
+      <section className="px-[var(--margin)] pt-24 md:pt-32">
+        <div className="grid gap-8 md:grid-cols-2 md:items-end">
+          <Rise>
+            <h2 className="t-head">
+              Homes and land,
+              <br />
+              ready for you
+            </h2>
+          </Rise>
+          <Rise delay={0.1}>
+            <p className="max-w-[44ch] text-[15px] leading-[1.8] text-ink-soft md:justify-self-end">
+              Filter by how you want to own it and what kind of property you are looking for. Every listing can be visited with our team.
+            </p>
+          </Rise>
+        </div>
+
+        <div className="sticky top-0 z-20 -mx-[var(--margin)] mt-12 bg-white/95 px-[var(--margin)] py-4 backdrop-blur-md">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex flex-wrap items-center gap-3">
+              <LayoutGroup id="props-offer">
+                <div role="tablist" aria-label="Buy or rent" className="inline-flex rounded-full border border-ink/20 p-1">
+                  {OFFERS.map((o) => (
+                    <button
+                      key={o}
+                      role="tab"
+                      aria-selected={offer === o}
+                      onClick={() => setOffer(o)}
+                      className={`relative h-10 min-w-24 cursor-pointer rounded-full px-5 text-[14px] font-medium transition-colors ${offer === o ? "text-white" : "text-ink"}`}
+                    >
+                      {offer === o && <motion.span layoutId="props-pill" className="absolute inset-0 rounded-full bg-ink" transition={{ type: "spring", stiffness: 380, damping: 34 }} />}
+                      <span className="relative">{o === "Buy" ? "To buy" : "To rent"}</span>
+                    </button>
+                  ))}
+                </div>
+              </LayoutGroup>
               {CATS.map((c) => (
                 <button
                   key={c}
                   onClick={() => setCat(c)}
                   aria-pressed={cat === c}
-                  className={`relative min-h-11 cursor-pointer text-[15px] transition-colors duration-300 ${cat === c ? "text-ink" : "text-ink-soft hover:text-ink"}`}
+                  className={`h-10 cursor-pointer rounded-full border px-4 text-[14px] transition-colors ${
+                    cat === c ? "border-ink bg-ink text-white" : "border-ink/20 text-ink hover:border-ink"
+                  }`}
                 >
                   {c}
-                  {cat === c && <motion.span layoutId="cat-line-page" className="absolute inset-x-0 bottom-2 h-px bg-gold" />}
                 </button>
               ))}
             </div>
-          </div>
-          <div className="flex items-center gap-6">
-            {offer === "Buy" && (
-              <label className="flex items-center gap-3 text-[14px] text-ink-soft">
-                <span className="sr-only">Status</span>
-                <select
-                  value={status}
-                  onChange={(e) => setStatus(e.target.value as (typeof STATUSES)[number])}
-                  className="h-10 cursor-pointer border border-ink/15 bg-transparent px-3 text-[14px] text-ink focus:border-ink focus:outline-none"
-                >
-                  {STATUSES.map((s) => (
-                    <option key={s}>{s}</option>
-                  ))}
-                </select>
-              </label>
-            )}
-            <p className="text-[14px] text-ink-soft" aria-live="polite">
-              <span className="font-display text-2xl text-ink">{list.length}</span> {list.length === 1 ? "property" : "properties"}
-            </p>
+            <div className="flex items-center gap-4">
+              {offer === "Buy" && (
+                <label className="text-[14px]">
+                  <span className="sr-only">Status</span>
+                  <select
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value as (typeof STATUSES)[number])}
+                    className="h-10 cursor-pointer rounded-full border border-ink/20 bg-white px-4 text-[14px] focus:border-ink focus:outline-none"
+                  >
+                    {STATUSES.map((s) => (
+                      <option key={s}>{s}</option>
+                    ))}
+                  </select>
+                </label>
+              )}
+              <p className="text-[14px] text-ink-soft" aria-live="polite">
+                <span className="text-[1.4rem] text-ink">{list.length}</span> {list.length === 1 ? "property" : "properties"}
+              </p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <section className="bg-ivory px-[var(--margin)] pb-28 pt-14">
-        <motion.ul layout className="m-0 grid list-none gap-x-6 gap-y-16 p-0 sm:grid-cols-2 lg:grid-cols-3">
+        <motion.ul layout className="m-0 mt-10 grid list-none gap-x-6 gap-y-16 p-0 pb-24 sm:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout">
             {list.map((p, i) => (
               <motion.li
@@ -120,53 +129,39 @@ export default function PropertiesBrowser() {
         </motion.ul>
 
         {list.length === 0 && (
-          <div className="bg-sand px-8 py-20 text-center">
-            <p className="font-display text-4xl font-light">Nothing listed here right now.</p>
-            <p className="mx-auto mt-4 max-w-[46ch] text-ink-soft">
+          <div className="mb-24 rounded-3xl bg-sand px-8 py-20 text-center">
+            <p className="text-[1.8rem] font-light">Nothing listed here right now.</p>
+            <p className="mx-auto mt-3 max-w-[46ch] text-[14px] text-ink-soft">
               New {offer === "Rent" ? "rentals" : "properties"} open regularly. Tell us what you are looking for and we will call you first.
             </p>
             <button onClick={() => openVisit()} className="btn btn-dark mt-8">
-              Register your interest
+              Register your interest <span className="btn-arrow">→</span>
             </button>
           </div>
         )}
       </section>
 
-      {/* help band */}
-      <section className="grid bg-obsidian text-white md:grid-cols-2">
-        <div className="px-[var(--margin)] py-20 md:py-28">
-          <Rise>
-            <Kicker light>Need help choosing?</Kicker>
-          </Rise>
-          <SplitHeading text="Speak to someone who knows the land" className="t-head mt-6 max-w-[14ch]" />
-          <Rise delay={0.2}>
-            <p className="mt-6 max-w-[44ch] text-[17px] font-light leading-[1.8] text-white/75">
-              Tell us your budget, the area you like and when you want to move. We will shortlist properties and walk you through them on site.
-            </p>
-          </Rise>
-          <Rise delay={0.3} className="mt-10 flex flex-wrap gap-3">
-            <button onClick={() => openVisit()} className="btn btn-gold">
-              Book a site visit
-            </button>
-            <a href={site.contact.phoneHref} className="btn btn-line text-white">
-              Call {site.contact.phone}
-            </a>
-          </Rise>
-        </div>
-        <div className="grid grid-cols-2 gap-px bg-white/10">
-          {[
-            { k: "Villas", v: "Private homes with gardens and pools" },
-            { k: "Triplex houses", v: "Three-level homes in gated communities" },
-            { k: "Layouts", v: "Plots with roads, drainage and utilities" },
-            { k: "Farmlands", v: "Managed farmland near the city" },
-          ].map((x, i) => (
-            <Rise key={x.k} delay={i * 0.08} className="bg-obsidian p-8 md:p-10">
-              <p className="font-display text-[1.75rem] font-light">{x.k}</p>
-              <p className="mt-3 text-[15px] font-light text-white/60">{x.v}</p>
-            </Rise>
-          ))}
-        </div>
+      <DownloadsRow />
+
+      <section className="px-[var(--margin)] pb-28 pt-8">
+        <CtaCard />
       </section>
-    </>
+    </div>
+  );
+}
+
+function DownloadsRow() {
+  return (
+    <div className="overflow-hidden bg-sand py-14">
+      <motion.ul className="m-0 flex w-max list-none gap-4 p-0" animate={{ x: ["0%", "-50%"] }} transition={{ duration: 30, ease: "linear", repeat: Infinity }}>
+        {[...lux.downloads, ...lux.downloads].map((d, k) => (
+          <li key={k}>
+            <button onClick={() => openVisit(d.replace("Download ", "") + " request")} className="h-14 cursor-pointer rounded-full border border-ink/25 bg-white px-10 text-[14px] transition-colors hover:bg-ink hover:text-white">
+              {d}
+            </button>
+          </li>
+        ))}
+      </motion.ul>
+    </div>
   );
 }

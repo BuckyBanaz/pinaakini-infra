@@ -7,7 +7,8 @@ import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-// Inner-page opening: a full-bleed photograph that slowly drifts, breadcrumb, big serif title.
+// Lumera-style inner-page opening: full-bleed photograph, breadcrumb, huge light uppercase title,
+// a short line and an optional pill action.
 export default function PageHero({
   kicker,
   title,
@@ -16,6 +17,7 @@ export default function PageHero({
   image,
   crumb,
   short = false,
+  action,
 }: {
   kicker: string;
   title: string;
@@ -24,74 +26,82 @@ export default function PageHero({
   image: string;
   crumb: string;
   short?: boolean;
+  action?: { label: string; href: string };
 }) {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], reduce ? ["0%", "0%"] : ["0%", "22%"]);
-  const scale = useTransform(scrollYProgress, [0, 1], reduce ? [1, 1] : [1.08, 1.18]);
+  const y = useTransform(scrollYProgress, [0, 1], reduce ? ["0%", "0%"] : ["0%", "20%"]);
+  const scale = useTransform(scrollYProgress, [0, 1], reduce ? [1, 1] : [1.06, 1.16]);
   const fade = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
   const lines = [title, italic].filter(Boolean) as string[];
 
   return (
-    <section ref={ref} className={`relative flex items-end overflow-hidden bg-obsidian text-white ${short ? "min-h-[62svh]" : "min-h-[82svh]"}`}>
+    <section ref={ref} className={`relative flex items-end overflow-hidden bg-obsidian text-white ${short ? "min-h-[70svh]" : "min-h-[100svh]"}`}>
       <motion.div style={{ y, scale }} className="absolute inset-0">
         <Image src={image} alt="" fill priority quality={90} sizes="100vw" className="object-cover" />
       </motion.div>
-      <div aria-hidden className="absolute inset-0 bg-[linear-gradient(0deg,rgba(10,10,10,.82)_0%,rgba(10,10,10,.35)_55%,rgba(10,10,10,.45)_100%)]" />
+      <div aria-hidden className="absolute inset-0 bg-[linear-gradient(0deg,rgba(0,0,0,.7)_0%,rgba(0,0,0,.15)_55%,rgba(0,0,0,.35)_100%)]" />
 
-      <motion.div style={{ opacity: fade }} className="relative w-full px-[var(--margin)] pb-16 pt-40 md:pb-24">
-        <motion.nav
-          aria-label="Breadcrumb"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.1, ease: EASE }}
-          className="t-kicker flex items-center gap-3 text-[11px] text-white/70"
-        >
-          <Link href="/" className="hover:text-white">
-            Home
-          </Link>
-          <span aria-hidden className="text-gold">/</span>
-          <span aria-current="page" className="text-white">
-            {crumb}
-          </span>
-        </motion.nav>
+      <motion.nav
+        aria-label="Breadcrumb"
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, delay: 0.1, ease: EASE }}
+        className="absolute left-[var(--margin)] top-[104px] flex items-center gap-3 text-[13px] text-white/80"
+      >
+        <Link href="/" className="hover:text-white">
+          Home
+        </Link>
+        <span aria-hidden>/</span>
+        <span aria-current="page" className="text-white">
+          {crumb}
+        </span>
+      </motion.nav>
 
+      <motion.div style={{ opacity: fade }} className="relative w-full px-[var(--margin)] pb-14 pt-48 md:pb-20">
         <motion.p
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.2, ease: EASE }}
-          className="t-kicker mt-10 flex items-center gap-4 text-gold"
+          className="text-[13px] font-medium uppercase tracking-[0.24em] text-white/80"
         >
-          <span className="h-px w-10 bg-current" />
           {kicker}
         </motion.p>
 
-        <h1 className="t-display mt-6 text-[clamp(3rem,1.6rem+6vw,7.5rem)]" aria-label={lines.join(" ")}>
-          {lines.map((l, i) => (
-            <span key={l} aria-hidden className="block overflow-hidden pb-[0.06em]">
-              <motion.span
-                className={`block ${i === 1 ? "italic text-[#e9d6b0]" : ""}`}
-                initial={{ y: reduce ? 0 : "105%" }}
-                animate={{ y: 0 }}
-                transition={{ duration: 1.2, delay: 0.3 + i * 0.14, ease: EASE }}
-              >
-                {l}
-              </motion.span>
-            </span>
-          ))}
-        </h1>
+        <div className="mt-5 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <h1 className="font-display text-[clamp(2.7rem,1.2rem+6vw,7.5rem)] font-light uppercase leading-[0.95] tracking-[-0.02em]" aria-label={lines.join(" ")}>
+            {lines.map((l, i) => (
+              <span key={l} aria-hidden className="block overflow-hidden pb-[0.04em]">
+                <motion.span
+                  className="block"
+                  initial={{ y: reduce ? 0 : "105%" }}
+                  animate={{ y: 0 }}
+                  transition={{ duration: 1.2, delay: 0.3 + i * 0.14, ease: EASE }}
+                >
+                  {l}
+                </motion.span>
+              </span>
+            ))}
+          </h1>
 
-        {line && (
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.7, ease: EASE }}
-            className="mt-8 max-w-[52ch] text-[17px] font-light leading-[1.8] text-white/85"
-          >
-            {line}
-          </motion.p>
-        )}
+          {(line || action) && (
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.7, ease: EASE }}
+              className="max-w-[40ch] lg:pb-3"
+            >
+              {line && <p className="text-[15px] font-light leading-[1.8] text-white/85">{line}</p>}
+              {action && (
+                <a href={action.href} className="btn btn-gold mt-6">
+                  {action.label}
+                  <span className="btn-arrow">↓</span>
+                </a>
+              )}
+            </motion.div>
+          )}
+        </div>
       </motion.div>
     </section>
   );

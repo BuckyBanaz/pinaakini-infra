@@ -2,29 +2,42 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import HomeClientExtras from "@/components/HomeClientExtras";
 import Hero from "@/components/home/Hero";
-import About from "@/components/home/About";
-import Categories from "@/components/home/Categories";
-import Properties from "@/components/home/Properties";
-import Signature from "@/components/home/Signature";
-import PortfolioReel from "@/components/home/PortfolioReel";
-import Pillars from "@/components/home/Pillars";
-import Testimonials from "@/components/home/Testimonials";
-import CtaBand from "@/components/home/CtaBand";
+import ProjectMap from "@/components/home/ProjectMap";
+import Partners from "@/components/home/Partners";
+import Voices from "@/components/home/Voices";
+import Considered from "@/components/lux/Considered";
+import Statement from "@/components/lux/Statement";
+import Collection from "@/components/lux/Collection";
+import Amenities from "@/components/lux/Amenities";
+import RoomsBand from "@/components/lux/RoomsBand";
+import CoreServices from "@/components/lux/CoreServices";
+import Experience from "@/components/lux/Experience";
+import Faq from "@/components/lux/Faq";
+import Nearby from "@/components/lux/Nearby";
+import Invest from "@/components/lux/Invest";
 
+// Lumera-style home for Pinaakini: cinematic film hero, considered intro, the collection
+// (buy/rent), amenities, rooms, the Nellore map, services, the experience, client stories,
+// partners, FAQs, landmarks and the invitation to visit.
 export default function Home() {
   return (
     <>
       <Navbar />
       <main>
         <Hero />
-        <About />
-        <Categories />
-        <Properties />
-        <Signature />
-        <PortfolioReel />
-        <Pillars />
-        <Testimonials />
-        <CtaBand />
+        <Considered />
+        <Statement />
+        <Collection />
+        <Amenities />
+        <RoomsBand />
+        <ProjectMap />
+        <CoreServices />
+        <Experience />
+        <Voices />
+        <Partners />
+        <Faq />
+        <Nearby />
+        <Invest />
       </main>
       <Footer />
       <HomeClientExtras />

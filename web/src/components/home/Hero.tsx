@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { FILM, home } from "@/lib/home";
 import { openVisit } from "@/lib/visit";
 
@@ -30,6 +30,11 @@ export default function Hero() {
 
   const introOpacity = useTransform(scrollYProgress, [0, 0.14], [1, 0]);
   const introY = useTransform(scrollYProgress, [0, 0.14], [0, -60]);
+  const midOpacity = useTransform(scrollYProgress, [0.18, 0.26, 0.5, 0.58], [0, 1, 1, 0]);
+  const midY = useTransform(scrollYProgress, [0.18, 0.58], [40, -40]);
+  const midPointer = useTransform(midOpacity, (o) => (o > 0.5 ? "auto" : "none"));
+  const statsOpacity = useTransform(scrollYProgress, [0.62, 0.72, 0.999, 1], [0, 1, 1, 1]);
+  const statsY = useTransform(scrollYProgress, [0.62, 0.75], [60, 0]);
   const shade = useTransform(scrollYProgress, [0, 0.16, 0.9, 1], [1, 0.6, 0.6, 0.85]);
   const progress = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
@@ -161,84 +166,86 @@ export default function Hero() {
           className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,8,8,.72)_0%,rgba(8,8,8,.35)_45%,rgba(8,8,8,0)_75%),linear-gradient(0deg,rgba(8,8,8,.6)_0%,rgba(8,8,8,0)_45%)]"
         />
 
-        {/* opening title */}
+        {/* 1 · title */}
         <motion.div
           style={{ opacity: introOpacity, y: introY }}
-          className="absolute inset-x-0 bottom-0 px-[var(--margin)] pb-[max(40px,calc(env(safe-area-inset-bottom)+24px))] text-white md:pb-20"
+          className="absolute inset-x-0 bottom-0 px-[var(--margin)] pb-[max(36px,calc(env(safe-area-inset-bottom)+24px))] text-white md:pb-16"
         >
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.2, ease: EASE }}
-            className="t-kicker flex items-center gap-4 text-gold"
-          >
-            <span className="h-px w-10 bg-current" />
-            {hero.kicker}
-          </motion.p>
-          <h1 className="t-display mt-6 text-[clamp(3.1rem,1.4rem+7.4vw,8.75rem)] text-white" aria-label={hero.title.join(" ")}>
+          <h1 className="flex flex-wrap items-end gap-x-6 font-display text-[clamp(2.9rem,1.2rem+7vw,8.5rem)] font-light uppercase leading-[0.95] tracking-[-0.02em]" aria-label={hero.title.join(" ")}>
             {hero.title.map((line, li) => (
-              <span key={line} aria-hidden className="block overflow-hidden pb-[0.06em]">
+              <span key={line} aria-hidden className="block overflow-hidden pb-[0.04em]">
                 <motion.span
-                  className={`block ${li === 1 ? "italic text-[#e9d6b0]" : ""}`}
+                  className="block"
                   initial={{ y: "105%" }}
                   animate={{ y: 0 }}
-                  transition={{ duration: 1.3, delay: 0.35 + li * 0.15, ease: EASE }}
+                  transition={{ duration: 1.3, delay: 0.3 + li * 0.15, ease: EASE }}
                 >
                   {line}
                 </motion.span>
               </span>
             ))}
+            <motion.a
+              href="#considered"
+              aria-label="Scroll down"
+              initial={{ opacity: 0, scale: 0.6 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.9, delay: 0.9, ease: EASE }}
+              className="mb-[0.18em] flex h-[0.62em] w-[0.62em] items-center justify-center rounded-full border-2 border-white/90 text-[0.32em] transition-colors hover:bg-white hover:text-ink"
+            >
+              ↓
+            </motion.a>
           </h1>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.9, ease: EASE }}
-            className="mt-8 flex flex-col gap-8 md:flex-row md:items-end md:justify-between"
-          >
-            <p className="max-w-[44ch] text-[16px] font-light leading-[1.7] text-white/85 md:text-[17px]">{hero.line}</p>
-            <div className="flex flex-wrap gap-3">
+        </motion.div>
+
+        {/* 2 · line + actions */}
+        <motion.div
+          style={{ opacity: midOpacity, y: midY }}
+          className="pointer-events-none absolute left-[var(--margin)] top-1/2 w-[min(88vw,460px)] -translate-y-1/2 text-white"
+        >
+          <motion.div style={{ pointerEvents: midPointer }}>
+            <p className="text-[16px] font-light leading-[1.75] text-white/90 md:text-[17px]">{hero.line}</p>
+            <div className="mt-8 flex flex-wrap gap-3">
               <a href={hero.primary.href} className="btn btn-gold">
                 {hero.primary.label}
+                <span className="btn-arrow">→</span>
               </a>
-              <button type="button" onClick={() => openVisit()} className="btn btn-line text-white">
+              <button type="button" onClick={() => openVisit()} className="btn btn-line">
                 {hero.secondary.label}
+                <span className="btn-arrow">→</span>
               </button>
             </div>
           </motion.div>
         </motion.div>
 
-        {hero.beats.map((b) => (
-          <Beat key={b.text} p={scrollYProgress} at={b.at as [number, number]} kicker={b.kicker} text={b.text} />
-        ))}
+        {/* 3 · glass stat cards */}
+        <motion.ul
+          style={{ opacity: statsOpacity, y: statsY }}
+          className="pointer-events-none absolute inset-x-[var(--margin)] bottom-8 md:bottom-12 z-10 m-0 grid list-none grid-cols-2 gap-3 p-0 md:grid-cols-4 md:gap-4"
+        >
+          {home.stats.map((st) => (
+            <li key={st.label} className="rounded-2xl border border-white/25 bg-white/10 px-5 py-6 text-center text-white backdrop-blur-md md:py-8">
+              <span className="block text-[clamp(1.6rem,1rem+1.8vw,2.6rem)] font-normal leading-none">
+                {st.value.toLocaleString("en-IN")}
+                {st.suffix}
+              </span>
+              <span className="mt-3 block text-[12px] text-white/80">{st.label}</span>
+            </li>
+          ))}
+        </motion.ul>
 
         {/* scroll progress */}
         <div className="pointer-events-none absolute right-[var(--margin)] top-1/2 hidden -translate-y-1/2 flex-col items-center gap-4 md:flex">
           <span className="t-kicker text-[10px] text-white/70 [writing-mode:vertical-rl]">Scroll</span>
           <span className="relative h-28 w-px overflow-hidden bg-white/25">
-            <motion.span style={{ height: progress }} className="absolute inset-x-0 top-0 bg-gold" />
+            <motion.span style={{ height: progress }} className="absolute inset-x-0 top-0 bg-white" />
           </span>
         </div>
 
         {/* film loading */}
         <span aria-hidden className="absolute inset-x-0 bottom-0 h-[2px] bg-white/10">
-          <span ref={barRef} className="block h-full origin-left scale-x-0 bg-gold/80 transition-transform duration-300" />
+          <span ref={barRef} className="block h-full origin-left scale-x-0 bg-white/80 transition-transform duration-300" />
         </span>
       </div>
     </section>
-  );
-}
-
-function Beat({ p, at, kicker, text }: { p: MotionValue<number>; at: [number, number]; kicker: string; text: string }) {
-  const [a, b] = at;
-  const opacity = useTransform(p, [a, a + 0.05, b - 0.05, b], [0, 1, 1, 0]);
-  const y = useTransform(p, [a, b], [40, -40]);
-  return (
-    <motion.div
-      style={{ opacity, y }}
-      className="pointer-events-none absolute bottom-[14vh] left-[var(--margin)] w-[min(86vw,560px)] text-white md:bottom-auto md:top-1/2 md:-translate-y-1/2"
-    >
-      <p className="t-kicker text-gold">{kicker}</p>
-      <p className="t-display mt-4 text-[clamp(2.2rem,1.4rem+3vw,4.25rem)] leading-[1.02]">{text}</p>
-    </motion.div>
   );
 }

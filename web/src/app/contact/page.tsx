@@ -15,9 +15,10 @@ export default function ContactPage() {
         short
         crumb="Contact"
         kicker="Contact us"
-        title="Let’s talk about"
-        italic="your next address."
+        title="Let’s talk"
+        line="Questions about a property, a site visit or our consultancy services? Our team is a call or a message away."
         image="/img/entrance.webp"
+        action={{ label: "Reach us", href: "#reach" }}
       />
       <ContactContent />
     </PageShell>

@@ -1,36 +1,22 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
-import { getProjectBySlug, getActiveProjects } from "@/lib/projects";
-import ProjectDetailClient from "./ProjectDetailClient";
+import PageShell from "@/components/PageShell";
+import { getActiveProjects, getProjectBySlug } from "@/lib/projects";
+import ProjectDetail from "./ProjectDetail";
 
-interface Props {
-  params: Promise<{ slug: string }>;
+type Params = Promise<{ slug: string }>;
+
+export function generateStaticParams() {
+  return getActiveProjects().map((p) => ({ slug: p.slug }));
 }
 
-export async function generateStaticParams() {
-  const activeProjects = getActiveProjects();
-  return activeProjects.map((p) => ({
-    slug: p.slug,
-  }));
-}
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;
   const project = getProjectBySlug(slug);
-
-  if (!project) {
-    return {
-      title: "Property Not Found | Pinaakini Infra",
-    };
-  }
-
+  if (!project) return { title: "Property not found | Pinaakini Infra" };
   return {
-    title: `${project.name} | Pinaakini Infra Private Limited`,
+    title: `${project.name} | Pinaakini Infra`,
     description: project.seoDescription || project.shortDescription,
     openGraph: {
       title: `${project.name} — ${project.location}`,
@@ -41,23 +27,32 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function PropertyDetailPage({ params }: Props) {
+// The page itself is static; only the part that reads the URL waits inside Suspense
+// (Next.js 16 cache components: URL data must be read under a Suspense boundary).
+export default function PropertyDetailPage({ params }: { params: Params }) {
+  return (
+    <PageShell>
+      <Suspense fallback={<DetailFallback />}>
+        <Detail params={params} />
+      </Suspense>
+    </PageShell>
+  );
+}
+
+async function Detail({ params }: { params: Params }) {
   const { slug } = await params;
   const project = getProjectBySlug(slug);
+  if (!project) notFound();
+  const related = getActiveProjects()
+    .filter((p) => p.slug !== slug)
+    .slice(0, 3);
+  return <ProjectDetail project={project} related={related} />;
+}
 
-  if (!project) {
-    notFound();
-  }
-
-  // Related projects in the active catalog
-  const relatedProjects = getActiveProjects().filter((p) => p.slug !== slug).slice(0, 3);
-
+function DetailFallback() {
   return (
-    <>
-      <Navbar />
-      <ProjectDetailClient project={project} relatedProjects={relatedProjects} />
-      <Footer />
-      <WhatsAppButton />
-    </>
+    <div className="flex min-h-[100svh] items-end bg-obsidian px-[var(--margin)] pb-16">
+      <div className="h-24 w-2/3 animate-pulse rounded-2xl bg-white/10" />
+    </div>
   );
 }

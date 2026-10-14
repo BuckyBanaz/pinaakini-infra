@@ -6,27 +6,31 @@
   so every inner page follows the same palette.
 */
 @theme {
-  --color-ivory: #f7f4ee;
-  --color-paper: #fbf9f5;
-  --color-sand: #efe9df;
-  --color-stone: #e2dbcf;
-  --color-ink: #141414;
-  --color-ink-soft: #5b5750;
-  --color-muted: #5b5750;
-  --color-gold: #b08d57;
-  --color-gold-deep: #8a6a3a;
-  --color-obsidian: #0f0f0e;
-  --color-night: #0f0f0e;
+  /* Lumera-style monochrome on pure white, neutral greys only (no warm tones).
+     Legacy names are aliases so every page follows. */
+  --color-white: #ffffff;
+  --color-ivory: #ffffff;
+  --color-paper: #ffffff;
+  --color-sand: #f3f3f3;
+  --color-surface: #f3f3f3;
+  --color-stone: #e6e6e6;
+  --color-ink: #1c1b1a;
+  --color-ink-soft: #6b6b6b;
+  --color-muted: #6b6b6b;
+  --color-sage: #eeeeee;
+  --color-gold: #b5b5b5;
+  --color-gold-deep: #6b6b6b;
+  --color-obsidian: #161616;
+  --color-night: #0f0f0f;
+  --color-bronze: #6b6b6b;
+  --color-champagne: #b5b5b5;
+  --color-marigold: #b5b5b5;
+  --color-forest: #161616;
 
-  --color-bronze: #8a6a3a;
-  --color-champagne: #b08d57;
-  --color-marigold: #b08d57;
-  --color-forest: #141414;
-  --color-surface: #efe9df;
+  --font-display: var(--font-poppins), system-ui, sans-serif;
+  --font-sans: var(--font-poppins), system-ui, sans-serif;
 
-  --font-display: var(--font-cormorant), "Times New Roman", serif;
-  --font-sans: var(--font-jost), system-ui, sans-serif;
-
+  --radius-theme: 9999px;
   --ease-lux: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -49,8 +53,15 @@ body {
 }
 
 ::selection {
-  background: var(--color-gold);
-  color: #fff;
+  background: #1c1b1a;
+  color: #ffffff;
+}
+
+/* page content sits above the revealed footer */
+main {
+  position: relative;
+  z-index: 1;
+  background: #ffffff;
 }
 
 section[id] {
@@ -58,7 +69,7 @@ section[id] {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-gold);
+  outline: 2px solid var(--color-ink);
   outline-offset: 3px;
 }
 
@@ -66,16 +77,16 @@ section[id] {
 /* type roles */
 .t-display {
   font-family: var(--font-display);
-  font-weight: 300;
-  letter-spacing: -0.02em;
-  line-height: 0.95;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
 }
 .t-head {
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(2.5rem, 1.6rem + 3.6vw, 5rem);
-  letter-spacing: -0.015em;
-  line-height: 1;
+  font-size: clamp(2.1rem, 1.4rem + 2.9vw, 4rem);
+  letter-spacing: -0.03em;
+  line-height: 1.08;
 }
 .t-kicker {
   font-family: var(--font-sans);
@@ -85,58 +96,88 @@ section[id] {
   text-transform: uppercase;
 }
 
-/* buttons */
+/* buttons: Lumera-style pills, optional arrow circle via .btn-arrow */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  height: 3.25rem;
-  padding: 0 1.75rem;
+  height: 3rem;
+  padding: 0 0.5rem 0 1.4rem;
   font-family: var(--font-sans);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  letter-spacing: 0;
+  border-radius: 9999px;
   transition:
     background-color 0.4s var(--ease-lux),
     color 0.4s var(--ease-lux),
     border-color 0.4s var(--ease-lux),
     transform 0.4s var(--ease-lux);
   cursor: pointer;
+  white-space: nowrap;
+}
+.btn:not(:has(.btn-arrow)) {
+  padding: 0 1.5rem;
 }
 .btn:active {
   transform: translateY(1px);
 }
+.btn-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 9999px;
+  transition: transform 0.4s var(--ease-lux);
+}
+.btn:hover .btn-arrow {
+  transform: rotate(-45deg);
+}
 .btn-gold {
-  background: var(--color-gold);
-  color: #fff;
+  background: #ffffff;
+  color: var(--color-ink);
+}
+.btn-gold .btn-arrow {
+  background: var(--color-ink);
+  color: #ffffff;
 }
 .btn-gold:hover {
-  background: var(--color-ink);
+  background: #e6e6e6;
 }
 .btn-dark {
   background: var(--color-ink);
-  color: #fff;
+  color: #ffffff;
+}
+.btn-dark .btn-arrow {
+  background: #ffffff;
+  color: var(--color-ink);
 }
 .btn-dark:hover {
-  background: var(--color-gold);
+  background: #3a3a3a;
 }
 .btn-line {
-  border: 1px solid currentColor;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  color: #ffffff;
+}
+.btn-line .btn-arrow {
+  background: #ffffff;
+  color: var(--color-ink);
 }
 .btn-line:hover {
-  background: #fff;
-  color: var(--color-ink);
-  border-color: #fff;
+  background: rgba(255, 255, 255, 0.12);
 }
 .btn-line-dark {
-  border: 1px solid var(--color-ink);
+  border: 1px solid rgba(28, 27, 26, 0.35);
   color: var(--color-ink);
 }
-.btn-line-dark:hover {
+.btn-line-dark .btn-arrow {
   background: var(--color-ink);
-  color: #fff;
+  color: #ffffff;
+}
+.btn-line-dark:hover {
+  border-color: var(--color-ink);
 }
 
 }

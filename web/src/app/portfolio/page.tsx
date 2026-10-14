@@ -15,9 +15,10 @@ export default function PortfolioPage() {
         crumb="Portfolio"
         kicker="Our portfolio"
         title="Communities"
-        italic="we have built."
+        italic="we have built"
         line="Villas, triplex homes, plotted layouts and farmland, delivered and in progress across Nellore."
         image="/img/evening.webp"
+        action={{ label: "View the portfolio", href: "#list" }}
       />
       <PortfolioGallery />
     </PageShell>

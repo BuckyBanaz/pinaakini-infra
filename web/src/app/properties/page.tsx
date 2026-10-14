@@ -4,7 +4,7 @@ import PageHero from "@/components/PageHero";
 import PropertiesBrowser from "./PropertiesBrowser";
 
 export const metadata: Metadata = {
-  title: "Available properties — Pinaakini Infra, Nellore",
+  title: "Properties to buy or rent — Pinaakini Infra, Nellore",
   description: "Villas, triplex homes, plotted layouts and farmland in Nellore to buy or rent. Filter by type and book a site visit.",
 };
 
@@ -13,11 +13,12 @@ export default function PropertiesPage() {
     <PageShell>
       <PageHero
         crumb="Properties"
-        kicker="Available properties"
-        title="Homes and land,"
-        italic="ready for you."
-        line="Villas, triplex homes, plotted layouts and farmland across Nellore. Choose to buy or rent, then book a visit."
+        kicker="The collection"
+        title="Properties"
+        italic="in Nellore"
+        line="Villas, triplex homes, plotted layouts and farmland across Nellore, to buy or to rent."
         image="/img/pool.webp"
+        action={{ label: "Browse properties", href: "#list" }}
       />
       <PropertiesBrowser />
     </PageShell>
